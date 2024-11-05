@@ -1,16 +1,14 @@
-import PaintingList from './components/PaintingList/PaintingList';
-import Section from './components/Section/Section';
-import paintings from './paintings.json';
+import PageTitle from './components/PageTitle/PageTitle.component';
+import EventBoard from './components/EventBoard/EventBoard.component';
+import upcomingEvents from './upcoming-events.json';
 
-export default function App() {
+function App() {
   return (
-    <div>
-      <Section title={"Week's top"}>
-        <PaintingList items={paintings} />
-        <PaintingList items={paintings} />
-      </Section>
-
-      <Section title={'The best'}></Section>
-    </div>
+    <>
+      <PageTitle text="24th Core Worlds Coalition Conference" />
+      <EventBoard events={upcomingEvents} />
+    </>
   );
 }
+
+export default App;
