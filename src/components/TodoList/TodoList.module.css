@@ -1,0 +1,18 @@
+.todoList {
+  max-width: 400px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  border: 1px solid black;
+}
+
+.text {
+  margin-right: 20px;
+}
+
+.removeButton {
+  cursor: pointer;
+}

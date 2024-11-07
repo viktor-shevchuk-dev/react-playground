@@ -1,0 +1,8 @@
+.control {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.control:first-child {
+  margin-right: 10px;
+}
