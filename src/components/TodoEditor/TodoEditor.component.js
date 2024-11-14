@@ -1,5 +1,9 @@
 import { Component } from 'react';
 
+import IconButton from '../IconButton/IconButton.component';
+
+import { ReactComponent as AddIcon } from '../../icons/add.svg';
+
 class TodoEditor extends Component {
   state = { todoText: '' };
 
@@ -20,7 +24,10 @@ class TodoEditor extends Component {
           value={this.state.todoText}
           onChange={this.handleTodoTextChange}
         />
-        <button type="submit">Submit</button>
+        <br />
+        <IconButton type="submit" aria-label="Submit">
+          <AddIcon width={24} fill="#fff" />
+        </IconButton>
       </form>
     );
   }

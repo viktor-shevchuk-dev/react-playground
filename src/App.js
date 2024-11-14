@@ -7,8 +7,17 @@ import TodoList from './components/TodoList/TodoList.component';
 import Form from './components/Form/Form.component';
 import TodoEditor from './components/TodoEditor/TodoEditor.component';
 import Filter from './components/Filter/Filter.component';
+import Modal from './components/Modal/Modal.component';
+import Clock from './components/Clock/Clock.component.js';
+import Tabs from './components/Tabs/Tabs.component';
+import IconButton from './components/IconButton/IconButton.component.js';
+
+import { ReactComponent as AddIcon } from './icons/add.svg';
+
+import styles from './App.module.css';
 
 import initialTodos from './initialTodos.json';
+import tabs from './tabs.json';
 
 // const colorPickerOptions = [
 //   { label: 'red', color: '#F44336' },
@@ -20,7 +29,31 @@ import initialTodos from './initialTodos.json';
 // ];
 
 class App extends Component {
-  state = { todos: initialTodos, filteredInputValue: '' };
+  state = {
+    todos: [],
+    filteredInputValue: '',
+    showModal: false,
+    initialTodosLoaded: false,
+  };
+
+  componentDidMount() {
+    const todos = JSON.parse(localStorage.getItem('todos')) ?? [];
+
+    this.setState({ todos, initialTodosLoaded: true });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const nextTodos = this.state.todos;
+    const prevTodos = prevState.todos;
+
+    if (prevTodos !== nextTodos) {
+      localStorage.setItem('todos', JSON.stringify(nextTodos));
+    }
+
+    if (nextTodos.length > prevTodos.length && prevState.initialTodosLoaded) {
+      this.toggleModal();
+    }
+  }
 
   calculateCompletedTodos = () =>
     this.state.todos.reduce((acc, currentValue) => {
@@ -54,8 +87,9 @@ class App extends Component {
   addTodo = (newTodoText) => {
     this.setState((prevState) => {
       const newTodo = { text: newTodoText, completed: false, id: newTodoText };
-      return { todos: [...prevState.todos, newTodo] };
+      return { todos: [newTodo, ...prevState.todos] };
     });
+    // this.toggleModal();
   };
 
   getFilteredTodos = () => {
@@ -73,15 +107,40 @@ class App extends Component {
     this.setState({ filteredInputValue: event.currentTarget.value });
   };
 
+  toggleModal = () => {
+    this.setState((prevState) => {
+      return { showModal: !prevState.showModal };
+    });
+  };
+
   render() {
     return (
       <>
+        <Tabs items={tabs} />
+
+        <IconButton onClick={this.toggleModal}>
+          <AddIcon width={40} height={40} fill="white" />
+          Add Todo
+        </IconButton>
+        {this.state.showModal && (
+          <Modal onClose={this.toggleModal}>
+            <TodoEditor onFormSubmit={this.addTodo} />
+            <button
+              className={styles.modalButton}
+              type="button"
+              onClick={this.toggleModal}
+            >
+              Close Modal
+            </button>
+          </Modal>
+        )}
+
         {/* <Counter initialValue={10} /> */}
         {/* <Dropdown /> */}
         {/* <ColorPicker options={colorPickerOptions} /> */}
 
-        <Form onSubmit={this.handleFormSubmit} />
-        <TodoEditor onFormSubmit={this.addTodo} />
+        {/* <Form onSubmit={this.handleFormSubmit} /> */}
+
         <Filter
           onFilterInputChange={this.onFilterInputChange}
           filteredInputValue={this.state.filteredInputValue}
@@ -94,6 +153,8 @@ class App extends Component {
         />
         <h2>Overall todos: {this.state.todos.length}</h2>
         <h2>Completed todos: {this.calculateCompletedTodos()}</h2>
+
+        {this.state.showModal && <Clock />}
       </>
     );
   }
