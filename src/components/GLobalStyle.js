@@ -28,11 +28,7 @@ export const GlobalStyle = createGlobalStyle`
     max-width: 100%;
   }
 
-  ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-  }
+   
 
   h1,
   h2,
