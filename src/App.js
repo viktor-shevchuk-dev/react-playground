@@ -1,86 +1,43 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
-import { MaterialEditorForm } from './components/MaterialEditorForm/MaterialEditorForm.component';
-import { MaterialList } from './components/MaterialList/MaterialList.component';
+import { SignupForm } from './components/SignupFom/SignupForm.component';
+import { ColorPicker } from './components/ColorPicker/ColorPicker.component';
+import { Counter } from './components/Counter/Counter.component';
+import { Clock } from './components/Clock/Clock.component';
+import PokemonForm from './components/Pokemon/PokemonForm/PokemonForm.component';
+import PokemonInfo from './components/Pokemon/PokemonInfo/PokemonInfo.component';
+import Appbar from './components/Clock/AppBar.component';
 
-import * as API from './services/api';
+const colorPickerOptions = [
+  { label: 'red', color: '#F44336' },
+  { label: 'green', color: '#4CAF50' },
+  { label: 'blue', color: '#2196F3' },
+  { label: 'grey', color: '#607D8B' },
+  { label: 'pink', color: '#E91E63' },
+  { label: 'indigo', color: '#3F51B5' },
+];
 
-class App extends Component {
-  state = { materials: [], isLoading: false, error: null };
+const App = () => {
+  const [pokemonName, setPokemonName] = useState('');
 
-  async componentDidMount() {
-    try {
-      this.setState({ isLoading: true });
-      const materials = await API.getMaterials();
-      this.setState({ materials });
-    } catch (error) {
-      console.log('Failed to get materials:', error);
-      this.setState({ error });
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  }
-
-  addMaterial = async (values) => {
-    try {
-      this.setState({ isLoading: true });
-      const material = await API.addMaterial(values);
-      this.setState((prevState) => ({
-        materials: [...prevState.materials, material],
-      }));
-    } catch (error) {
-      console.log('Failed to add material:', error);
-      this.setState({ error });
-    } finally {
-      this.setState({ isLoading: false });
-    }
+  const handleFormSubmit = (pokemonName) => {
+    setPokemonName(pokemonName);
   };
 
-  removeMaterial = async (id) => {
-    try {
-      await API.removeMaterial(id);
-      this.setState((prevState) => ({
-        materials: prevState.materials.filter((material) => material.id !== id),
-      }));
-    } catch (error) {
-      console.log('Failed to remove material:', error);
-      this.setState({ error });
-    }
-  };
+  return (
+    <>
+      <Appbar />
+      <br />
 
-  updateMaterial = async (fields) => {
-    try {
-      const updatedMaterial = await API.edtMaterial(fields);
-      this.setState((prevState) => ({
-        materials: prevState.materials.map((material) =>
-          fields.id === material.id ? updatedMaterial : material
-        ),
-      }));
-    } catch (error) {
-      this.setState({ error });
-      console.log('Failed to edit material:', error);
-    }
-  };
+      <SignupForm />
+      <Counter />
+      <Clock />
+      <ColorPicker options={colorPickerOptions} />
 
-  render() {
-    const { isLoading, materials, error } = this.state;
-
-    return (
-      <>
-        {error && <p>{error.message}</p>}
-        <MaterialEditorForm
-          onSubmit={this.addMaterial}
-          isSubmitting={isLoading}
-        />
-        {isLoading && <p>Loading...</p>}
-        <MaterialList
-          items={materials}
-          onRemove={this.removeMaterial}
-          onEdit={this.updateMaterial}
-        />
-      </>
-    );
-  }
-}
+      <PokemonForm onSubmit={handleFormSubmit} />
+      <PokemonInfo pokemonName={pokemonName} />
+    </>
+  );
+};
 
 export default App;
