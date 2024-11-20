@@ -30,6 +30,7 @@ export default function PokemonInfo({ pokemonName }) {
             );
       })
       .then((pokemon) => {
+        console.log({ pokemon, pokemonName });
         setStatus(Status.RESOLVED);
         setPokemon(pokemon);
       })

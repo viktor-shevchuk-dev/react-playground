@@ -7,6 +7,8 @@ import { Clock } from './components/Clock/Clock.component';
 import PokemonForm from './components/Pokemon/PokemonForm/PokemonForm.component';
 import PokemonInfo from './components/Pokemon/PokemonInfo/PokemonInfo.component';
 import Appbar from './components/Clock/AppBar.component';
+import SkipEffectOnFirstRender from './components/SkipEffectOnFirstRender.component';
+import Friends from './components/Friends.component';
 
 const colorPickerOptions = [
   { label: 'red', color: '#F44336' },
@@ -27,7 +29,7 @@ const App = () => {
   return (
     <>
       <Appbar />
-      <br />
+      <hr />
 
       <SignupForm />
       <Counter />
@@ -36,6 +38,12 @@ const App = () => {
 
       <PokemonForm onSubmit={handleFormSubmit} />
       <PokemonInfo pokemonName={pokemonName} />
+      <hr />
+
+      <SkipEffectOnFirstRender />
+      <hr />
+
+      <Friends />
     </>
   );
 };
