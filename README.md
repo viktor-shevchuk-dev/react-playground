@@ -1,8 +1,0 @@
-- useEffect and skipping the first render
-- Counter with useReducer
-  - step
-  - state + step
-  - action
-- Memoization of computations with useMemo
-- [Hook flow](https://raw.githubusercontent.com/donavon/hook-flow/master/hook-flow.png)
-- Overall render time should not be larger than 16ms. The interface should be 60fps (1000ms / 60 frames = (1 frame === 16ms)).
